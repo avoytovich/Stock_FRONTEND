@@ -1,5 +1,5 @@
 {
-  "name": "Bookmars_FRONT",
+  "name": "stock_front",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,14 +15,11 @@
   "license": "ISC",
   "dependencies": {
     "@material-ui/core": "^3.9.2",
-    "antd": "^3.16.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "history": "^4.7.2",
     "lodash": "^4.17.11",
-    "logrocket": "^1.0.3",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
-    "react-facebook-login": "^4.1.1",
     "react-router-dom": "^4.3.1"
   },
   "devDependencies": {

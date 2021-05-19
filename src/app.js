@@ -1,14 +1,11 @@
 import React, { useEffect, useReducer } from 'react';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
-import LogRocket from 'logrocket';
 
 import history from './helper/history';
 import Context from './helper/context';
 import generalReducer from './utils/generalReducer';
 import { Home, LandingPage, Test } from './components';
 import checkAuth from './helper/redirections';
-
-LogRocket.init('6vridg/test');
 
 const App = props => {
 

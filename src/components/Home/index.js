@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import 'antd/dist/antd.css';
-import { } from 'antd';
-import { get } from 'lodash';
 
 import Head from './../Header';
 import connect from './../../utils/connectFunction';
