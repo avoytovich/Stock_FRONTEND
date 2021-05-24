@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Head from './../Header';
+import Header from './../Header';
 import connect from './../../utils/connectFunction';
 import action from './../../utils/actions';
 
@@ -11,7 +11,7 @@ const Home = props => {
 
   return (
     <>
-      <Head/>
+      <Header/>
       <div className="wrapper-layout">
         Hallo
       </div>
