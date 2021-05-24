@@ -1,10 +1,9 @@
 import React from 'react';
 import {
   Grid,
-  Link,
   Typography
 } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { get } from 'lodash';
 
 import checkAuth from './../../helper/redirections';
@@ -15,43 +14,34 @@ import imageAvatar from './../../assets/images/avatar.svg';
 
 import './header.sass';
 
-const Head = props => {
-
-  const links = {
-    signUp:
-      {
-        title: 'Sign Up',
-        route: '/bookmark/sign-up'
-      },
-    logOut:
-      {
-        title: 'Log Out',
-        route: '/bookmark'
-      },
-    
-  };
+const Header = props => {
 
   const handleLogOut = () => localStorage.setItem('token', JSON.stringify(null));
+  
+  const isAuth = checkAuth();
 
-  const resolveLink = () => checkAuth() ? links.signUp : links.logOut;
-  const { title, route } = resolveLink();
+  const links = [
+    {
+      title: 'Home',
+      route: '/'
+    },
+    {
+      title: isAuth ? 'Log In / Sign Up' : 'Log Out',
+      route: isAuth ? '/login' : '/'
+    }
+  ];
 
-  const history = get(props, 'history');
-
-  const resolveOnClickLink = () => {
+  const resolveOnClickLink = title => {
     switch(title) {
     case 'Log Out':
       handleLogOut();
-      history.push(route);
-      break;
-    case 'Sign Up':
-      history.push(route);
       break;
     default:
-      handleLogOut();
-      history.push(route);
+      break;
     }
   }
+
+  const history = get(props, 'history');
 
   //console.log('props Header', props);
   return (
@@ -67,15 +57,30 @@ const Head = props => {
                 source={imageLogo}
               />
             </Grid>
-            <Grid item xs={10} sm={10} className="container-info-title">
+            <Grid item xs={4} sm={4} className="container-info-title">
               <Typography className='info-title'>
-                  Bookmark's
+                  Get Offers
               </Typography>
             </Grid>
           </Grid>
-          <Grid item xs={2} sm={2} className="container-link">
+          <Grid item xs={8} sm={8} className="container-link">
             {
-              !checkAuth() && (
+              links.map(item => {
+                return (
+                  <Link
+                    to={item.route}
+                    className='link'
+                    onClick={() => resolveOnClickLink(item.title)}
+                  >
+                    <Typography className='link-title'>
+                      {item.title}
+                    </Typography>
+                  </Link>
+                );
+              })
+            }
+            {
+              !isAuth && (
                 <SVG 
                   className='link-avatar'
                   width='48px' 
@@ -84,16 +89,6 @@ const Head = props => {
                 />
               )
             }
-            <Link
-              href={route}
-              className="link-auth"
-              onClick={resolveOnClickLink}
-              style={{ color: '#470b2f' }}
-            >
-              <Typography className='link-title'>
-                {title}
-              </Typography>
-            </Link>
           </Grid>
         </Grid>
       </Grid>
@@ -101,4 +96,4 @@ const Head = props => {
   );
 }
 
-export default withRouter(Head);
+export default withRouter(Header);

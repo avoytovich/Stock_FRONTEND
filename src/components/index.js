@@ -1,11 +1,15 @@
-import Head from './Header';
+import Header from './Header';
+import Footer from './Footer';
 import Home from './Home';
-import LandingPage from './LandingPage';
+import Landing from './Landing';
+import Login from './Login';
 import Test from './Test';
 
 export {
-  Head,
+  Header,
+  Footer,
   Home,
-  LandingPage,
+  Landing,
+  Login,
   Test
 }
