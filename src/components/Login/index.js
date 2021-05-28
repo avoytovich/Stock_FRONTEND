@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { get } from 'lodash';
 
 import { Layout } from './../../containers';
+import connect from './../../utils/connectFunction';
+import action from './../../utils/actions';
 import { API } from '../../helper/constants';
 import { wrapRequest } from '../../utils/api';
 
@@ -54,9 +56,10 @@ const Login = props => {
     });
     const token = get(loginUser, 'data.token');
     const userId = get(loginUser, 'data.userId');
-    if (token) {
+    if (token && userId) {
+      props.dispatchSaveUserId('saveUserId', userId);
       localStorage.setItem('token', JSON.stringify(token));
-      props.history.push(`/user/${userId}`);
+      props.history.push('/user/dashboard');
     } else {
       console.log('Something went wrong...with login');
     }
@@ -111,4 +114,18 @@ const Login = props => {
   );
 };
 
-export default withRouter(Login);
+const mapStateToProps = state => {
+  return { store: state };
+};
+
+const mapDispatchToProps = dispatch => {
+  const actionData = (name, payload) => dispatch(action(name, payload));
+  return {
+    dispatchSaveUserId: actionData,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Login));
