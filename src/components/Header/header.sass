@@ -1,8 +1,15 @@
+html
+  scroll-behavior: smooth
+body
+  margin: 0px
 .wrapper-header
+  position: fixed
+  left: 0
+  top: 0
+  right: 0
   display: flex
   justify-content: center
   align-items: center
-  position: fixed
   width: 100%
   z-index: 1000
   min-height: 75px
@@ -31,6 +38,8 @@
         .info-title
           font-family: 'Spartan', sans-serif
           font-size: 26px
+          color: #5d5d5d
+          font-weight: 600
     .container-link
       display: flex
       justify-content: flex-end
@@ -42,6 +51,10 @@
         background-repeat: no-repeat
         background-position: center
         background-size: contain
-      .link-auth
+      .link
+        text-decoration: none
         .link-title
-          color: #470b2f
+          margin: 0px 15px
+          font-size: 14px
+          font-weight: 600 
+          color: #5d5d5d
