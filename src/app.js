@@ -1,14 +1,16 @@
 import React, { useEffect, useReducer } from 'react';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
+import createPersistedReducer from 'use-persisted-reducer'
 
 import history from './helper/history';
 import Context from './helper/context';
 import generalReducer from './utils/generalReducer';
-import { Home, Landing, Test, Login } from './components';
+import { Dashboard, Landing, Test, Login } from './components';
 import checkAuth from './helper/redirections';
 
 const App = props => {
-  const [store, dispatch] = useReducer(generalReducer, {});
+  const usePersistedReducer = createPersistedReducer('state');
+  const [store, dispatch] = usePersistedReducer(generalReducer, {});
 
   useEffect(() => {}, []);
 
@@ -20,9 +22,9 @@ const App = props => {
           <Route exact path="/" component={Landing} />
           <Route exact path="/login" component={Login} />
           <Route
-            path="/user/:id"
+            path="/user/dashboard"
             render={() =>
-              checkAuth() ? <Redirect to="/login" /> : <Home test="test" />
+              checkAuth() ? <Redirect to="/login" /> : <Dashboard test="test" />
             }
           />
           <Route

@@ -1,6 +1,6 @@
 import Header from './Header';
 import Footer from './Footer';
-import Home from './Home';
+import Dashboard from './Dashboard';
 import Landing from './Landing';
 import Login from './Login';
 import Test from './Test';
@@ -8,7 +8,7 @@ import Test from './Test';
 export {
   Header,
   Footer,
-  Home,
+  Dashboard,
   Landing,
   Login,
   Test
