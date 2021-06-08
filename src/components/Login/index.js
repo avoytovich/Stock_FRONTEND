@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Grid, Typography, TextField, Button } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
-import { get } from 'lodash';
+import React, { useState } from "react";
+import { Grid, Typography, TextField, Button } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
+import { get } from "lodash";
 
-import { Layout } from './../../containers';
-import connect from './../../utils/connectFunction';
-import action from './../../utils/actions';
-import { API } from '../../helper/constants';
-import { wrapRequest } from '../../utils/api';
+import { Layout } from "./../../containers";
+import connect from "./../../utils/connectFunction";
+import action from "./../../utils/actions";
+import { API } from "../../helper/constants";
+import { wrapRequest } from "../../utils/api";
 
-import './login.sass';
+import "./login.sass";
 
-const Login = props => {
+const Login = (props) => {
   // console.log('props Login', props);
 
   const [email, setEmail] = useState();
@@ -19,61 +19,56 @@ const Login = props => {
 
   const inputFields = [
     {
-      label: 'email',
-      type: 'email',
-      placeholder: 'your@email.com',
+      label: "email",
+      type: "email",
+      placeholder: "your@email.com",
     },
     {
-      label: 'password',
-      type: 'password',
-      placeholder: 'your password',
+      label: "password",
+      type: "password",
+      placeholder: "your password",
     },
   ];
 
   const handleChange = (value, label) => {
     switch (label) {
-    case 'email':
-      setEmail(value);
-      break;
-    case 'password':
-      setPassword(value);
-      break;
+      case "email":
+        setEmail(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
     }
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const payload = {
       email,
       password,
     };
     const loginUser = await wrapRequest({
-      method: 'POST',
+      method: "POST",
       url: `${API.URL}:${API.PORT}/login`,
-      mode: 'cors',
-      cache: 'default',
+      mode: "cors",
+      cache: "default",
       data: payload,
     });
-    const token = get(loginUser, 'data.token');
-    const userId = get(loginUser, 'data.userId');
+    const token = get(loginUser, "data.token");
+    const userId = get(loginUser, "data.userId");
     if (token && userId) {
-      props.dispatchSaveUserId('saveUserId', userId);
-      localStorage.setItem('token', JSON.stringify(token));
-      props.history.push('/user/dashboard');
+      props.dispatchSaveUserId("saveUserId", userId);
+      localStorage.setItem("token", JSON.stringify(token));
+      props.history.push("/user/dashboard");
     } else {
-      console.log('Something went wrong...with login');
+      console.log("Something went wrong...with login");
     }
   };
 
   return (
     <Layout>
       <div className="wrapper-landing-login">
-        <Grid
-          container
-          spacing={0}
-          justify="center"
-          className="container-landing-login"
-        >
+        <Grid container spacing={0} justify="center" className="container-landing-login">
           <Grid item xs={4} sm={4}>
             <div className="landing-login">
               <form onSubmit={handleSubmit}>
@@ -87,9 +82,9 @@ const Login = props => {
                     inputProps={{
                       type: each.type,
                     }}
-                    onChange={e => handleChange(e.target.value, each.label)}
+                    onChange={(e) => handleChange(e.target.value, each.label)}
                     style={{
-                      marginBottom: '5px',
+                      marginBottom: "5px",
                     }}
                     fullWidth
                   />
@@ -103,8 +98,8 @@ const Login = props => {
           <Grid item xs={4} sm={4}>
             <div className="landing-about">
               <Typography className="landing-about-content">
-                Application allows you to make request for offers. Don't spend
-                time on searching! Wait on proposals and choose the best one.
+                Application allows you to make request for offers. Don't spend time on searching! Wait on proposals and
+                choose the best one.
               </Typography>
             </div>
           </Grid>
@@ -114,18 +109,15 @@ const Login = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { store: state };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   const actionData = (name, payload) => dispatch(action(name, payload));
   return {
     dispatchSaveUserId: actionData,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

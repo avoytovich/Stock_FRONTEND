@@ -1,40 +1,40 @@
-import React from 'react';
-import { Grid, Paper, Tabs, Tab, Button, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import { Grid, Paper, Tabs, Tab, Button, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { Layout } from './../../containers';
-import connect from './../../utils/connectFunction';
-import action from './../../utils/actions';
+import { Layout } from "./../../containers";
+import connect from "./../../utils/connectFunction";
+import action from "./../../utils/actions";
 
-import imageMower from './../../assets/images/mower.jpg';
-import SVG from '../../helper/customizeIcon';
+import imageMower from "./../../assets/images/mower.jpg";
+import SVG from "../../helper/customizeIcon";
 
-import './dashboard.sass';
+import "./dashboard.sass";
 
 const mockAllRequests = [
   {
-    title: 'mower',
-    preferred_price: '170$',
-    description: 'new, manual, with extra tools',
-    status: 'accepted',
+    title: "mower",
+    preferred_price: "170$",
+    description: "new, manual, with extra tools",
+    status: "accepted",
     photo: imageMower,
     isActive: true,
     UserId: 16,
   },
   {
-    title: 'mower',
-    preferred_price: '170$',
-    description: 'new, manual, with extra tools',
-    status: 'in_progress',
+    title: "mower",
+    preferred_price: "170$",
+    description: "new, manual, with extra tools",
+    status: "in_progress",
     photo: imageMower,
     isActive: true,
     UserId: 17,
   },
   {
-    title: 'mower',
-    preferred_price: '170$',
-    description: 'new, manual, with extra tools',
-    status: 'in_progress',
+    title: "mower",
+    preferred_price: "170$",
+    description: "new, manual, with extra tools",
+    status: "in_progress",
     photo: imageMower,
     isActive: true,
     UserId: 16,
@@ -43,23 +43,23 @@ const mockAllRequests = [
 
 const mockAvailableBid = [
   {
-    title: 'mower',
-    offered_price: '175$',
-    deadline: '2 days',
+    title: "mower",
+    offered_price: "175$",
+    deadline: "2 days",
     payment_in_advance: true,
-    status: 'accepted',
-    requested_contact: 'email@email.com',
+    status: "accepted",
+    requested_contact: "email@email.com",
     photo: imageMower,
     UserId: 16,
     AskId: 1,
   },
   {
-    title: 'mower',
-    offered_price: '175$',
-    deadline: '2 days',
+    title: "mower",
+    offered_price: "175$",
+    deadline: "2 days",
     payment_in_advance: true,
-    status: 'in_progress',
-    requested_contact: '',
+    status: "in_progress",
+    requested_contact: "",
     photo: imageMower,
     UserId: 16,
     AskId: 1,
@@ -69,11 +69,11 @@ const mockAvailableBid = [
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    color: '#5d5d5d',
+    color: "#5d5d5d",
   },
 });
 
-const Dashboard = props => {
+const Dashboard = (props) => {
   // console.log('Dashboard props', props);
 
   const [value, setValue] = React.useState(0);
@@ -82,34 +82,29 @@ const Dashboard = props => {
 
   const handleChange = (event, newValue) => setValue(newValue);
 
-  const resolveBackGroundColor = status => {
+  const resolveBackGroundColor = (status) => {
     switch (status) {
-    case 'in_progress':
-      return 'orange';
-    case 'accepted':
-      return 'green';
+      case "in_progress":
+        return "orange";
+      case "accepted":
+        return "green";
     }
   };
 
-  const isUserId = userId => props.store.userId === userId;
+  const isUserId = (userId) => props.store.userId === userId;
 
-  const yourRequests = mockAllRequests.filter(item => isUserId(item.UserId));
-  const otherRequests = mockAllRequests.filter(item => !isUserId(item.UserId));
+  const yourRequests = mockAllRequests.filter((item) => isUserId(item.UserId));
+  const otherRequests = mockAllRequests.filter((item) => !isUserId(item.UserId));
 
   const renderYourRequests = () =>
-    yourRequests.map(item => (
+    yourRequests.map((item) => (
       <div
         className="list-item"
         style={{
           backgroundColor: resolveBackGroundColor(item.status),
         }}
       >
-        <SVG
-          className="item-image"
-          width="256px"
-          height="256px"
-          source={item.photo}
-        />
+        <SVG className="item-image" width="256px" height="256px" source={item.photo} />
         <div className="item-title">
           <div className="title-key">ask:</div>
           <div className="title-value">{item.title.toLocaleUpperCase()}</div>
@@ -143,19 +138,14 @@ const Dashboard = props => {
     ));
 
   const renderOtherRequests = () =>
-    otherRequests.map(item => (
+    otherRequests.map((item) => (
       <div
         className="list-item"
         style={{
           backgroundColor: resolveBackGroundColor(item.status),
         }}
       >
-        <SVG
-          className="item-image"
-          width="256px"
-          height="256px"
-          source={item.photo}
-        />
+        <SVG className="item-image" width="256px" height="256px" source={item.photo} />
         <div className="item-title">
           <div className="title-key">ask:</div>
           <div className="title-value">{item.title.toLocaleUpperCase()}</div>
@@ -186,19 +176,14 @@ const Dashboard = props => {
     ));
 
   const renderYourBid = () =>
-    mockAvailableBid.map(item => (
+    mockAvailableBid.map((item) => (
       <div
         className="list-item"
         style={{
           backgroundColor: resolveBackGroundColor(item.status),
         }}
       >
-        <SVG
-          className="item-image"
-          width="256px"
-          height="256px"
-          source={item.photo}
-        />
+        <SVG className="item-image" width="256px" height="256px" source={item.photo} />
         <div className="item-title">
           <div className="title-key">bid:</div>
           <div className="title-value">{item.title.toLocaleUpperCase()}</div>
@@ -213,9 +198,7 @@ const Dashboard = props => {
         </div>
         <div className="item-payment">
           <div className="payment-key">payment in advance:</div>
-          <div className="payment-value">
-            {item.payment_in_advance ? 'yes' : 'no'}
-          </div>
+          <div className="payment-value">{item.payment_in_advance ? "yes" : "no"}</div>
         </div>
         <div className="item-status">
           <div className="status-key">status:</div>
@@ -223,29 +206,25 @@ const Dashboard = props => {
         </div>
         <div className="item-bid">
           <div className="bid-action">
-            <Typography className="action-title">
-              Contact of the interested person:
-            </Typography>
+            <Typography className="action-title">Contact of the interested person:</Typography>
             <div className="action-content">
-              <Typography className="content-text">
-                {item.requested_contact || 'not accepted yet'}
-              </Typography>
+              <Typography className="content-text">{item.requested_contact || "not accepted yet"}</Typography>
             </div>
           </div>
         </div>
       </div>
     ));
 
-  const renderRequests = tab => {
+  const renderRequests = (tab) => {
     switch (tab) {
-    case 0:
-      return renderYourRequests();
-    case 1:
-      return renderOtherRequests();
-    case 2:
-      return renderYourBid();
-    default:
-      return renderYourRequests();
+      case 0:
+        return renderYourRequests();
+      case 1:
+        return renderOtherRequests();
+      case 2:
+        return renderYourBid();
+      default:
+        return renderYourRequests();
     }
   };
 
@@ -257,13 +236,7 @@ const Dashboard = props => {
             <div className="container-dashboard">
               <div className="dashboard-tabs">
                 <Paper className={classes.root}>
-                  <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="secondary"
-                    textColor="secondary"
-                    centered
-                  >
+                  <Tabs value={value} onChange={handleChange} indicatorColor="secondary" textColor="secondary" centered>
                     <Tab label="YOUR REQUESTS" />
                     <Tab label="OTHER REQUESTS" />
                     <Tab label="YOUR BIDS" />
@@ -279,11 +252,11 @@ const Dashboard = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { store: state };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   const actionData = (name, payload) => dispatch(action(name, payload));
   return {
     // dispatchRemoveTitle: actionData,
@@ -291,7 +264,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
