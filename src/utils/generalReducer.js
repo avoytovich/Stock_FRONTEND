@@ -5,6 +5,16 @@ const generalReducer = (state, action) => {
         ...state,
         userId: action.payload,
       };
+    case "ERROR_NOTIFICATION":
+      return {
+        ...state,
+        errorNotification: action.payload,
+      };
+    case "SUCCESS_NOTIFICATION":
+      return {
+        ...state,
+        successNotification: action.payload,
+      };
     default:
       return state;
   }
