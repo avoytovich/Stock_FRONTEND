@@ -1,5 +1,10 @@
 export default (name, payload) => {
   switch (name) {
+    case "setActiveLink":
+      return {
+        type: "SET_ACTIVE_LINK",
+        payload,
+      };
     case "saveUserId":
       return {
         type: "SAVE_USER_ID",

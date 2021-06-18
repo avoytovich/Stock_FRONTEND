@@ -1,19 +1,17 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import { withRouter } from "react-router-dom";
 
-import { Header, Footer } from './../../components';
+import { Header, Footer } from "./../../components";
 
-import './layout.sass';
+import "./layout.sass";
 
-const Layout = props => {
-  // console.log('props Layout', props);
+const Layout = (props) => {
+  // console.log("props Layout", props);
 
   return (
     <React.Fragment>
       <Header />
-      <div className="container-layout">
-        {props.children}
-      </div>
+      <div className="container-layout">{props.children}</div>
       <Footer />
     </React.Fragment>
   );

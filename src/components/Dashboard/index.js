@@ -23,12 +23,12 @@ const mockAllRequests = [
   },
   {
     title: "mower",
-    preferred_price: "170$",
+    preferred_price: "17$",
     description: "new, manual, with extra tools",
     status: "in_progress",
     photo: imageMower,
     isActive: true,
-    UserId: 17,
+    UserId: 1,
   },
   {
     title: "mower",
@@ -74,7 +74,7 @@ const useStyles = makeStyles({
 });
 
 const Dashboard = (props) => {
-  // console.log('Dashboard props', props);
+  // console.log("Dashboard props", props);
 
   const [value, setValue] = React.useState(0);
 
@@ -94,7 +94,55 @@ const Dashboard = (props) => {
   const isUserId = (userId) => props.store.userId === userId;
 
   const yourRequests = mockAllRequests.filter((item) => isUserId(item.UserId));
-  const otherRequests = mockAllRequests.filter((item) => !isUserId(item.UserId));
+
+  const renderAllRequests = () =>
+    mockAllRequests.map((item) => (
+      <div
+        className="list-item"
+        style={{
+          backgroundColor: resolveBackGroundColor(item.status),
+        }}
+      >
+        <SVG className="item-image" width="256px" height="256px" source={item.photo} />
+        <div className="item-title">
+          <div className="title-key">ask:</div>
+          <div className="title-value">{item.title.toLocaleUpperCase()}</div>
+        </div>
+        <div className="item-preferred_price">
+          <div className="preferred_price-key">preferred price:</div>
+          <div className="preferred_price-value">{item.preferred_price}</div>
+        </div>
+        <div className="item-description">
+          <div className="description-key">description:</div>
+          <div className="description-value">{item.description}</div>
+        </div>
+        <div className="item-status">
+          <div className="status-key">status:</div>
+          <div className="status-value">{item.status}</div>
+        </div>
+        <div className="item-bid">
+          <div className="bid-action">
+            <Typography className="action-title">Actions:</Typography>
+            <div className="action-content">
+              {isUserId(item.UserId) ? (
+                <>
+                  <Button variant="outlined" color="secondary">
+                    DELETE
+                  </Button>
+                  <Button variant="outlined" color="primary">
+                    GET OFFERS
+                  </Button>
+                </>
+              ) : (
+                <Button variant="outlined" color="primary">
+                  BID
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    ));
 
   const renderYourRequests = () =>
     yourRequests.map((item) => (
@@ -130,44 +178,6 @@ const Dashboard = (props) => {
               </Button>
               <Button variant="outlined" color="primary">
                 GET OFFERS
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    ));
-
-  const renderOtherRequests = () =>
-    otherRequests.map((item) => (
-      <div
-        className="list-item"
-        style={{
-          backgroundColor: resolveBackGroundColor(item.status),
-        }}
-      >
-        <SVG className="item-image" width="256px" height="256px" source={item.photo} />
-        <div className="item-title">
-          <div className="title-key">ask:</div>
-          <div className="title-value">{item.title.toLocaleUpperCase()}</div>
-        </div>
-        <div className="item-preferred_price">
-          <div className="preferred_price-key">preferred price:</div>
-          <div className="preferred_price-value">{item.preferred_price}</div>
-        </div>
-        <div className="item-description">
-          <div className="description-key">description:</div>
-          <div className="description-value">{item.description}</div>
-        </div>
-        <div className="item-status">
-          <div className="status-key">status:</div>
-          <div className="status-value">{item.status}</div>
-        </div>
-        <div className="item-bid">
-          <div className="bid-action">
-            <Typography className="action-title">Actions:</Typography>
-            <div className="action-content">
-              <Button variant="outlined" color="primary">
-                BID
               </Button>
             </div>
           </div>
@@ -218,13 +228,13 @@ const Dashboard = (props) => {
   const renderRequests = (tab) => {
     switch (tab) {
       case 0:
-        return renderYourRequests();
+        return renderAllRequests();
       case 1:
-        return renderOtherRequests();
+        return renderYourRequests();
       case 2:
         return renderYourBid();
       default:
-        return renderYourRequests();
+        return renderRequests();
     }
   };
 
@@ -237,8 +247,8 @@ const Dashboard = (props) => {
               <div className="dashboard-tabs">
                 <Paper className={classes.root}>
                   <Tabs value={value} onChange={handleChange} indicatorColor="secondary" textColor="secondary" centered>
+                    <Tab label="ALL REQUESTS" />
                     <Tab label="YOUR REQUESTS" />
-                    <Tab label="OTHER REQUESTS" />
                     <Tab label="YOUR BIDS" />
                   </Tabs>
                 </Paper>
