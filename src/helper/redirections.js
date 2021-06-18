@@ -1,5 +1,5 @@
 //import history from './history';
 
-const checkAuth = () => !JSON.parse(localStorage.getItem('token'));
+const isAuth = () => !!JSON.parse(localStorage.getItem("token"));
 
-export default checkAuth;
+export default isAuth;

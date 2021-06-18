@@ -58,6 +58,7 @@ const Login = (props) => {
           data: { token, userId, message },
         } = data;
         props.dispatchSuccessNotifiction("successNotification", { message });
+        props.dispatchActiveLink("setActiveLink", "Dashboard");
         if (token && userId) {
           props.dispatchSaveUserId("saveUserId", userId);
           localStorage.setItem("token", JSON.stringify(token));
@@ -130,6 +131,7 @@ const mapDispatchToProps = (dispatch) => {
     dispatchSaveUserId: actionData,
     dispatchErrorNotification: actionData,
     dispatchSuccessNotifiction: actionData,
+    dispatchActiveLink: actionData,
   };
 };
 

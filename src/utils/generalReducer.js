@@ -1,5 +1,10 @@
 const generalReducer = (state, action) => {
   switch (action.type) {
+    case "SET_ACTIVE_LINK":
+      return {
+        ...state,
+        activeLink: action.payload,
+      };
     case "SAVE_USER_ID":
       return {
         ...state,
