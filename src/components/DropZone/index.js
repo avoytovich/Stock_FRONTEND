@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { RootRef, Paper } from "@material-ui/core";
 import { useDropzone } from "react-dropzone";
 import BackupIcon from "@material-ui/icons/Backup";
 
 import "./dropzone.sass";
 
-const DropZone = ({ setAcceptedFiles }) => {
+const DropZone = ({ name, formik, setAcceptedFiles }) => {
   const [files, setFiles] = useState([]);
+
+  const meta = formik.getFieldMeta(name);
+  const hasError = meta?.touched && meta?.error;
+
+  const uploadContainer = useRef(null);
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
@@ -19,6 +24,7 @@ const DropZone = ({ setAcceptedFiles }) => {
           })
         )
       );
+      formik.setFieldValue("files", acceptedFiles);
     },
   });
   const { ref, ...rootProps } = getRootProps();
@@ -93,12 +99,25 @@ const DropZone = ({ setAcceptedFiles }) => {
     [files]
   );
 
+  useEffect(() => {
+    if (!files.length && hasError) {
+      uploadContainer.current.style.color = "#ea4633";
+      uploadContainer.current.style.borderColor = "#ea4633";
+    } else {
+      uploadContainer.current.style.color = "#000000";
+      uploadContainer.current.style.borderColor = "#5d5d5d";
+    }
+  }, [files.length, hasError]);
+
   return (
     <RootRef rootRef={ref}>
       <Paper {...rootProps}>
         <input {...getInputProps()} />
         <div className="wrapper-upload">
-          <div className="container-upload">{files.length ? thumbs : <UploadPlaceholder />}</div>
+          <div className="container-upload" ref={uploadContainer}>
+            {files.length ? thumbs : <UploadPlaceholder />}
+          </div>
+          {hasError && <p className="upload-validation">{hasError}</p>}
         </div>
       </Paper>
     </RootRef>

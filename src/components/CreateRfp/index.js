@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Grid, TextField, Button } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 import { DropZone } from "..";
 import connect from "../../utils/connectFunction";
@@ -13,45 +15,30 @@ import "./createRfp.sass";
 const CreateRfp = (props) => {
   // console.log("props CreateRfp", props);
 
-  const [title, setTitle] = useState("");
-  const [preferredPrice, setPreferredPrice] = useState("");
-  const [description, setDescription] = useState("");
   const [acceptedFiles, setAcceptedFiles] = useState([]);
 
   const inputFields = [
     {
       label: "title",
+      name: "title",
       type: "text",
       placeholder: "your title",
     },
     {
       label: "preferred price",
+      name: "preferred_price",
       type: "text",
       placeholder: "your preferred price",
     },
     {
       label: "description",
+      name: "description",
       type: "text",
       placeholder: "your description",
     },
   ];
 
-  const handleChange = (value, label) => {
-    switch (label) {
-      case "title":
-        setTitle(value);
-        break;
-      case "preferred price":
-        setPreferredPrice(value);
-        break;
-      case "description":
-        setDescription(value);
-        break;
-    }
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (values) => {
     let formData = new FormData();
     acceptedFiles.forEach((file) => {
       formData.append("single", file);
@@ -69,10 +56,8 @@ const CreateRfp = (props) => {
         } = data;
         if (url) {
           const payload = {
-            title,
-            preferred_price: preferredPrice,
-            description,
             photo: url,
+            ...values,
           };
           wrapRequest({
             method: "POST",
@@ -99,39 +84,60 @@ const CreateRfp = (props) => {
       });
   };
 
+  const validationSchema = yup.object({
+    title: yup.string("Enter your title").required("Title is required"),
+    preferred_price: yup.string("Enter your preferred price").required("Preferred price is required"),
+    description: yup.string("Enter your description").required("Description is required"),
+    files: yup.mixed().required("Image is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      preferred_price: "",
+      description: "",
+      files: null,
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => handleSubmit(values),
+  });
+
   return (
     <div className="wrapper-create-rfp">
-      <Grid container spacing={0} justify="center" className="container-create-rfp">
-        <Grid item xs={4} sm={4}>
-          <div className="create-rfp">
-            <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
+        <Grid container spacing={0} justify="center" className="container-create-rfp">
+          <Grid item xs={4} sm={4}>
+            <div className="create-rfp">
               {inputFields.map((each, id) => (
                 <TextField
                   key={id}
                   id={each.label}
-                  name={each.label}
+                  style={{
+                    marginBottom: "5px",
+                  }}
+                  fullWidth
+                  name={each.name}
                   label={each.label.toUpperCase()}
                   placeholder={each.placeholder}
                   inputProps={{
                     type: each.type,
                   }}
-                  onChange={(e) => handleChange(e.target.value, each.label)}
-                  style={{
-                    marginBottom: "5px",
-                  }}
-                  fullWidth
+                  value={formik.values[each.name]}
+                  onChange={formik.handleChange}
+                  error={formik.touched[each.name] && Boolean(formik.errors[each.name])}
+                  helperText={formik.touched[each.name] && formik.errors[each.name]}
                 />
               ))}
               <Button type="submit" variant="contained" color="primary">
                 Create RFP
               </Button>
-            </form>
-          </div>
+            </div>
+          </Grid>
+          <Grid item xs={4} sm={4}>
+            <DropZone name="files" formik={formik} setAcceptedFiles={setAcceptedFiles} />
+          </Grid>
         </Grid>
-        <Grid item xs={4} sm={4}>
-          <DropZone setAcceptedFiles={setAcceptedFiles} />
-        </Grid>
-      </Grid>
+      </form>
     </div>
   );
 };
